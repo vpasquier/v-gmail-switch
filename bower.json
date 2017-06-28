@@ -4,7 +4,12 @@
   "version": "0.0.1",
   "dependencies": {
     "jquery": "^2.2.1",
-    "jquery-confirm": "~2.6.0"
+    "jquery-confirm": "~2.6.0",
+    "paper-card": "PolymerElements/paper-card#^2.0.0",
+    "iron-elements": "PolymerElements/iron-elements#^1.0.0",
+    "paper-input": "PolymerElements/paper-input#^1.1.14",
+    "shadydom": "webcomponents/shadydom#^v1.0.0",
+    "shadycss": "webcomponents/shadycss#^v1.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
