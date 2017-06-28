@@ -1,3 +1,18 @@
+/*
+ Copyright ~ Verdict
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 var tabUrl;
 
 function pageActionOnGES(tabInfo) {
@@ -20,35 +35,3 @@ chrome.webRequest.onCompleted.addListener(onChange, {urls: [target]});
 chrome.tabs.onActivated.addListener(function (activeInfo) {
     chrome.tabs.get(activeInfo.tabId, pageActionOnGES);
 });
-
-// Shortcut: Cmd + I
-chrome.commands.onCommand.addListener(function (command) {
-    chrome.tabs.query({
-        active: true,
-        currentWindow: true
-    }, function (tabs) {
-        var tab = tabs[0];
-        console.log(tab);
-        chrome.windows.create({"url": tab.url, "incognito": true});
-    });
-});
-
-// Omnibox - Type 'l'+space for entering search in DuckDuckGo
-chrome.omnibox.onInputChanged.addListener(function (text, suggest) {
-    text = text.replace(" ", "");
-    var suggestions = [];
-    suggestions.push({content: "Search with DuckDuckGo: " + text, description: "https://duckduckgo.com/?q=" + text});
-    chrome.omnibox.setDefaultSuggestion({description: suggestions[0].description});
-    suggestions.shift();
-    suggest(suggestions);
-});
-
-chrome.omnibox.onInputEntered.addListener(function (text) {
-    navigate('https://duckduckgo.com/?q=' + text + '&ia=web');
-});
-
-function navigate(url) {
-    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-        chrome.tabs.update(tabs[0].id, {url: url});
-    });
-}

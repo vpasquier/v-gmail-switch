@@ -1,9 +1,8 @@
 {
-  "name": "Switch",
+  "name": "Gmail Switch",
   "version": "1.0.0",
   "manifest_version": 2,
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
-  "description": "Switch",
+  "description": "Gmail Accounts Switch by Verdict",
   "icons": {
     "16": "images/v-16.png",
     "128": "images/v-128.png"
@@ -28,22 +27,12 @@
     "<all_urls>",
     "webRequest"
   ],
-  "omnibox": { "keyword" : "l" },
-  "commands": {
-    "switch": {
-      "suggested_key": {
-        "default": "Ctrl+I",
-        "mac": "Command+I"
-      },
-      "description": "Switch"
-    }
-  },
   "page_action": {
     "default_icon": {
       "19": "images/v-19.png",
       "38": "images/v-38.png"
     },
-    "default_title": "Switch",
+    "default_title": "Gmail Switch",
     "default_popup": "popup.html"
   }
 }
