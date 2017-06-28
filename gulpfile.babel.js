@@ -8,6 +8,8 @@ import es from 'event-stream';
 import path from 'path';
 import util from 'gulp-util';
 import moment from 'moment';
+import vulcanize from 'gulp-vulcanize';
+import crisper from 'gulp-crisper';
 
 const $ = gulpLoadPlugins();
 
@@ -278,7 +280,14 @@ gulp.task('build:firefox', ['build:base', 'vendor:firefox'], (done) => {
   return runSequence('size', done);
 });
 
-gulp.task('default', ['clean', 'build']);
-gulp.task('build',   ['build:chrome', 'build:firefox']);
-gulp.task('package', ['package:chrome', 'package:firefox']);
-gulp.task('release', ['release:chrome', 'release:firefox']);
+gulp.task('vulcanize', function() {
+    return gulp.src('app/elements/elements.html')
+        .pipe(vulcanize())
+        .pipe(crisper())
+        .pipe(gulp.dest('dist/chrome/elements'));
+});
+
+gulp.task('default', ['clean', 'vulcanize', 'build']);
+gulp.task('build',   ['vulcanize', 'build:chrome', 'build:firefox']);
+gulp.task('package', ['vulcanize', 'package:chrome', 'package:firefox']);
+gulp.task('release', ['vulcanize', 'release:chrome', 'release:firefox']);
