@@ -148,9 +148,9 @@ HEADINGS
 ==============================================================================*/
 
 .logo {
-  background-image: url("../images/v-38.png");
-  width: 30px;
-  height: 30px;
+  background-image: url("../images/v-128.png");
+  width: 128px;
+  height: 128px;
 }
 
 .server-main {
@@ -258,16 +258,6 @@ a.button:active {
 .reindex-es,
 .api-play {
   margin-left: 30px;
-}
-
-#loading {
-  display: none;
-  position: fixed;
-  height: 55px;
-  width: 54px;
-  z-index: 100;
-  background: transparent url('../images/loading_big.gif') no-repeat center;
-  opacity: 1;
 }
 
 /*==============================================================================
@@ -429,16 +419,6 @@ form {
   cursor: pointer;
   color: #ccc;
   right: 8px;
-}
-
-#loading-gif {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  background-image: url("../images/loading-20.gif");
-  height: 20px;
-  min-width: 20px;
-  display: none;
 }
 
 #json-search {
