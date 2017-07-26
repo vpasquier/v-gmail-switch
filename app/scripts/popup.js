@@ -27,8 +27,8 @@ const PREFIX_GMAIL_URL = 'https://mail.google.com/mail/u/';
 const SUFFIX_GMAIL_URL = '/#inbox';
 const COMPLETE = 'complete';
 const PARSER_SCRIPT = 'scripts/getPagesSource.js';
-;
-const ACCOUNTS_KEY = 'accounts'
+const ACCOUNTS_KEY = 'accounts';
+
 var accounts = [];
 
 function Account(email, url) {
@@ -37,7 +37,7 @@ function Account(email, url) {
 }
 
 window.onload = function () {
-    document.getElementById('add_account').addEventListener('click', addAccount);
+    document.getElementById('refresh').addEventListener('click', refresh);
 };
 
 function SwitchGmailException(message) {
@@ -45,9 +45,14 @@ function SwitchGmailException(message) {
     this.name = 'SwitchGmailException';
 }
 
-function addAccount() {
+function refresh() {
     chrome.storage.sync.get(ACCOUNTS_KEY, function (entry) {
+        var error = chrome.runtime.lastError;
+        if (error) {
+            throw new SwitchGmailException("Cannot get any data within your browser:" + error);
+        }
         if (Object.keys(entry).length === 0) {
+            accounts = [];
             updateTabURL(0);
         } else {
             accounts = entry.accounts;
@@ -66,9 +71,9 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
         chrome.tabs.executeScript(null, {
             file: PARSER_SCRIPT
         }, function (result) {
-            if (!result || chrome.runtime.lastError) {
-                console.error('Cannot parse the page content: \n' + chrome.runtime.lastError.message);
-                throw new SwitchGmailException('Cannot parse the page content for email detection');
+            var error = chrome.runtime.lastError;
+            if (!result || error) {
+                throw new SwitchGmailException('Cannot parse the page content for email detection: ' + error);
             }
             var email = result[0];
             //TODO TEMPLATE POLYMER
@@ -77,14 +82,13 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
 
             var account = new Account(email, tab.url);
             accounts.push(account);
-            chrome.storage.sync.set({ACCOUNTS_KEY: accounts}, function (result) {
-                if (!result) {
-                    chrome.storage.sync.clear(function () {
-                        notification('error', 'Failure', 'Something was wrong. Please try again.', '../images/v-128.png');
-                    });
+            chrome.storage.sync.set({ACCOUNTS_KEY: accounts}, function () {
+                var error = chrome.runtime.lastError;
+                if (error) {
+                    throw new SwitchGmailException("Cannot store any data within your browser:" + error);
                 }
-                notification('success', 'Success!', 'Your account has been added.', '../images/v-128.png');
             });
+            notification('success', 'Success!', 'Your account has been added.', '../images/v-128.png');
         });
     }
 });
