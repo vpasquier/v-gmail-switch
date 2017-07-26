@@ -390,6 +390,23 @@ a.useful-link {
 /*==============================================================================
 SEARCH
 ==============================================================================*/
+
+.gb_Db {
+  background: #f5f5f5;
+  border-top: 1px solid #ccc;
+  border-top-color: rgba(0,0,0,.2);
+  max-height: 230px;
+  overflow: auto;
+}
+
+.gb_Eb {
+  border-top: 1px solid #ccc;
+  border-top-color: rgba(0,0,0,.2);
+  display: block;
+  padding: 10px 20px;
+  position: relative;
+  white-space: nowrap;
+}
 form {
   height: 25px;
 }
