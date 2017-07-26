@@ -27,7 +27,7 @@ const PREFIX_GMAIL_URL = 'https://mail.google.com/mail/u/';
 const SUFFIX_GMAIL_URL = '/#inbox';
 const COMPLETE = 'complete';
 const PARSER_SCRIPT = 'scripts/getPagesSource.js';
-const ACCOUNTS_KEY = 'accounts';
+const ACCOUNTS_KEY = 'vAccounts';
 
 var accounts = [];
 
@@ -46,7 +46,7 @@ function SwitchGmailException(message) {
 }
 
 function refresh() {
-    chrome.storage.sync.get(ACCOUNTS_KEY, function (entry) {
+    chrome.storage.local.get(ACCOUNTS_KEY, function (entry) {
         var error = chrome.runtime.lastError;
         if (error) {
             throw new SwitchGmailException("Cannot get any data within your browser:" + error);
@@ -82,7 +82,7 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
 
             var account = new Account(email, tab.url);
             accounts.push(account);
-            chrome.storage.sync.set({ACCOUNTS_KEY: accounts}, function () {
+            chrome.storage.local.set({ACCOUNTS_KEY: accounts}, function () {
                 var error = chrome.runtime.lastError;
                 if (error) {
                     throw new SwitchGmailException("Cannot store any data within your browser:" + error);
