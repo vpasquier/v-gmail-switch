@@ -23,7 +23,7 @@
       "https://www.googleapis.com/auth/userinfo.email"
     ]
   },
-  "permissions": ["tabs", "<all_urls>"],
+  "permissions": ["tabs", "<all_urls>", "storage", "notifications", "webRequest","webRequestBlocking"],
   "page_action": {
     "default_icon": {
       "19": "images/v-19.png",

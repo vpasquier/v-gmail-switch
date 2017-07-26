@@ -14,6 +14,11 @@
  limitations under the License.
  */
 
+/**
+ * Background script.
+ * @since 1.0
+ */
+
 /* Navigation and Popup management */
 var tabUrl;
 
