@@ -35,54 +35,30 @@
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="bower_components/jquery-confirm/jquery.confirm.js"></script>
   <script src="scripts/popup.js"></script>
+  <script src="https://apis.google.com/js/api.js"></script>
   <!-- endbower -->
+
+  <!-- build:js scripts/popup.js -->
+  <script src="scripts/popup.js"></script>
   <!-- endbuild -->
 </head>
 <body>
 <div class=nav-link><a href=about.html>About</a></div>
+<button type="button" id="refresh">Refresh</button>
+
 <div class=vcontainer id=main-page>
-  <div class=heading>
-    <div class=vrow>
-      <div class=logo></div>
-      <h2>Gmail Switch</h2>
-    </div>
-  </div>
-  <div class=search>
-    <div class=vrow>
-      <div class=export>Gmail Switch</div>
-    </div>
-    <div class=vrow>
-      <div>
-        <form class=search-container>
-          <div id=loading-gif></div>
-          <input type=search id=json-search class=form placeholder="Enter search engine alternative name..." results=5>
-          <span class=searchclear id=json-searchclear>&#8855;</span></form>
+  <div class=gb_Cb>
+    <div class=gb_Db aria-hidden=false><a class=gb_Eb href=https://mail.google.com/mail/u/0 target=_blank
+                                          rel=noreferrer>
+      <div class=gb_Hb>
+        <div id="message" class=gb_Qb>vladimir.pasquier@gmail.com</div>
       </div>
-    </div>
-  </div>
-  <div class=search>
-    <div class=vrow>
-      <div class=export> Shortcut to Switch</div>
-    </div>
-    <div class=vrow>
-      <div>
-        <form class=search-container>
-          <div id=loading-gif></div>
-          <input type=search id=json-search class=form placeholder="Type shortcut keys..." results=5> <span
-                class=searchclear id=json-searchclear>&#8855;</span></form>
+    </a> <a class=gb_Eb href=https://mail.google.com/mail/u/2 target=_blank rel=noreferrer>
+      <div class=gb_Hb>
+        <div class=gb_Qb>vladletter@gmail.com</div>
       </div>
-    </div>
+    </a></div>
   </div>
-  <div class=toggles>
-    <div class=vrow>
-      <div class=onoffswitch>
-        <input type=checkbox name=onoffswitch class=onoffswitch-checkbox id=debug-switch>
-        <label class=onoffswitch-label for=debug-switch> <span class=onoffswitch-inner></span> <span
-                class=onoffswitch-switch></span> </label>
-      </div>
-    </div>
-  </div>
-  <button id="myBtn">Label</button>
 </div>
 </body>
 </html>
