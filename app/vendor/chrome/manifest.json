@@ -1,33 +1,29 @@
 {
   "name": "Gmail Switch",
-  "version": "1.0.0",
+  "version": "1.0",
   "manifest_version": 2,
   "description": "Gmail Accounts Switch by Verdict",
   "icons": {
     "16": "images/v-16.png",
     "128": "images/v-128.png"
   },
+  "content_security_policy": "script-src https://*.google.com 'unsafe-eval'; object-src 'self'",
   "default_locale": "en",
   "background": {
     "scripts": [
-      "chrome-bkg.js"
+      "scripts/background.js",
+      "scripts/base64.js"
     ],
     "persistent": true
   },
-  "options_page": "options.html",
-  "permissions": [
-    "cookies",
-    "tabs",
-    "http://*/*",
-    "https://*/*",
-    "activeTab",
-    "https://ajax.googleapis.com/",
-    "notifications",
-    "background",
-    "declarativeContent",
-    "<all_urls>",
-    "webRequest"
-  ],
+  "oauth2": {
+    "client_id": "444909976702-tahn4ovp53sr2e7j5109eee3uhdnpitl.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  },
+  "permissions": ["tabs", "<all_urls>"],
   "page_action": {
     "default_icon": {
       "19": "images/v-19.png",
