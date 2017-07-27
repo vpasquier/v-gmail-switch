@@ -42,3 +42,23 @@ chrome.webRequest.onCompleted.addListener(onChange, {urls: [target]});
 chrome.tabs.onActivated.addListener(function (activeInfo) {
     chrome.tabs.get(activeInfo.tabId, pageActionOnGES);
 });
+
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        notification(request.idP, request.titleP, request.messageP, request.img);
+    }
+);
+
+
+function notification(idP, titleP, messageP, img) {
+    chrome.notifications.create(idP, {
+        type: 'basic',
+        title: titleP,
+        message: messageP,
+        iconUrl: img
+    }, function () {
+        if (chrome.runtime.lastError) {
+            console.error(chrome.runtime.lastError);
+        }
+    });
+}

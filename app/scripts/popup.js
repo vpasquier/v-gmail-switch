@@ -27,9 +27,9 @@ const PREFIX_GMAIL_URL = 'https://mail.google.com/mail/u/';
 const SUFFIX_GMAIL_URL = '/#inbox';
 const COMPLETE = 'complete';
 const PARSER_SCRIPT = 'scripts/getPagesSource.js';
-const ACCOUNTS_KEY = 'vAccounts';
 
-var accounts = [];
+var accounts;
+var isTheSameCall;
 
 function Account(email, url) {
     this.email = email;
@@ -46,16 +46,22 @@ function SwitchGmailException(message) {
 }
 
 function refresh() {
-    chrome.storage.local.get(ACCOUNTS_KEY, function (entry) {
+    chrome.storage.local.get('accounts_keys', function (entry) {
         var error = chrome.runtime.lastError;
         if (error) {
-            throw new SwitchGmailException("Cannot get any data within your browser:" + error);
+            throw new SwitchGmailException('Cannot get any data within your browser:' + error);
         }
         if (Object.keys(entry).length === 0) {
             accounts = [];
             updateTabURL(0);
         } else {
-            accounts = entry.accounts;
+            // chrome.storage.local.clear(function() {
+            //     var error = chrome.runtime.lastError;
+            //     if (error) {
+            //         console.error(error);
+            //     }
+            // });
+            accounts = entry['accounts_keys'];
             var accountNumbers = [];
             for (var i = 0; i < accounts.length; i++) {
                 accountNumbers.push(getAccountNumber(accounts[i].url));
@@ -68,6 +74,13 @@ function refresh() {
 
 chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
     if (info.status === COMPLETE) {
+        var alreadyExist = false;
+        if (!isTheSameCall) {
+            isTheSameCall = true;
+        } else {
+            isTheSameCall = false;
+            return;
+        }
         chrome.tabs.executeScript(null, {
             file: PARSER_SCRIPT
         }, function (result) {
@@ -80,15 +93,36 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
             var message = document.querySelector('#message');
             message.innerText = email;
 
-            var account = new Account(email, tab.url);
-            accounts.push(account);
-            chrome.storage.local.set({ACCOUNTS_KEY: accounts}, function () {
-                var error = chrome.runtime.lastError;
-                if (error) {
-                    throw new SwitchGmailException("Cannot store any data within your browser:" + error);
+            // If the storage contains already the same entry, stop the detection.
+            chrome.storage.local.get('accounts_keys', function (entry) {
+                var entries = entry['accounts_keys'];
+                if (entries) {
+                    for (var i = 0; i < entries.length; i++) {
+                        if (entries[i].email === email) {
+                            alreadyExist = true;
+                            break;
+                        }
+                    }
+                    if (alreadyExist) {
+                        notification('success', 'Done', 'All your accounts have been added', '../images/v-128.png');
+                        return;
+                    }
                 }
+
+                // The entry still doesn't exist and has to be added to the accounts listing.
+                var account = new Account(email, tab.url);
+                accounts.push(account);
+                chrome.storage.local.set({'accounts_keys': accounts}, function () {
+                    var error = chrome.runtime.lastError;
+                    if (error) {
+                        throw new SwitchGmailException('Cannot store any data within your browser:' + error);
+                    }
+                });
+                // Let's continue the search/parse for new accounts.
+                setTimeout(function () {
+                    refresh();
+                }, 2000);
             });
-            notification('success', 'Success!', 'Your account has been added.', '../images/v-128.png');
         });
     }
 });
@@ -96,6 +130,7 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
 /* UTILS */
 
 function updateTabURL(number) {
+    isTheSameCall = false;
     chrome.tabs.update({'url': PREFIX_GMAIL_URL + number + SUFFIX_GMAIL_URL}, function () {
         chrome.tabs.executeScript({
             code: 'history.replaceState({}, "", " ");'
@@ -114,14 +149,6 @@ function navigate(url) {
 }
 
 function notification(idP, titleP, messageP, img) {
-    chrome.notifications.create(idP, {
-        type: 'basic',
-        title: titleP,
-        message: messageP,
-        iconUrl: img
-    }, function () {
-        if (chrome.runtime.lastError) {
-            console.error(chrome.runtime.lastError);
-        }
+    chrome.runtime.sendMessage({'idP': idP, 'titleP': titleP, 'messageP': messageP, 'img': img}, function () {
     });
 };
