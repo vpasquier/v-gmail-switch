@@ -2,7 +2,7 @@
   "name": "Gmail Switch",
   "version": "1.0",
   "manifest_version": 2,
-  "description": "Gmail Accounts Switch by Verdict",
+  "description": "Gmail Accounts Switch",
   "icons": {
     "16": "images/v-16.png",
     "128": "images/v-128.png"
@@ -11,17 +11,9 @@
   "default_locale": "en",
   "background": {
     "scripts": [
-      "../../scripts/background.js",
-      "../../scripts/base64.js"
+      "../../scripts/background.js"
     ],
     "persistent": true
-  },
-  "oauth2": {
-    "client_id": "444909976702-tahn4ovp53sr2e7j5109eee3uhdnpitl.apps.googleusercontent.com",
-    "scopes": [
-      "https://www.googleapis.com/auth/gmail",
-      "https://www.googleapis.com/auth/userinfo.email"
-    ]
   },
   "permissions": ["tabs", "<all_urls>", "storage", "notifications", "webRequest","webRequestBlocking"],
   "page_action": {
