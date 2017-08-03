@@ -22,7 +22,7 @@
 'use strict';
 
 var accounts = [];
-const PREFIX_GMAIL_URL = 'https://mail.google.com/mail/u/';
+var PREFIX_GMAIL_URL = 'https://mail.google.com/mail/u/';
 
 function Account(email, url) {
     this.email = email;

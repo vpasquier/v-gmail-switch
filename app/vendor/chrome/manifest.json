@@ -11,8 +11,8 @@
   "default_locale": "en",
   "background": {
     "scripts": [
-      "scripts/background.js",
-      "scripts/base64.js"
+      "../../scripts/background.js",
+      "../../scripts/base64.js"
     ],
     "persistent": true
   },

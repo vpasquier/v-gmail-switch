@@ -72,7 +72,7 @@ function updateVersionForRelease(vendor, distFile) {
     .pipe($.chromeManifest({
       buildnumber: version,
       background: {
-				target: 'scripts/background.js'
+				target: 'app/scripts/background.js'
 			}
 		}))
     .pipe(gulp.dest(dist(vendor)));
@@ -177,7 +177,7 @@ gulp.task('watch', ['lint', 'babel', 'html', 'chrome', 'firefox', 'extras'], () 
 	gulp.src('app/vendor/chrome/manifest.json')
 		.pipe($.chromeManifest({
 			background: {
-				target: 'scripts/background.js'
+				target: 'app/scripts/background.js'
 			}
 		}))
 	.pipe(gulp.dest(dist('chrome')));
@@ -185,7 +185,7 @@ gulp.task('watch', ['lint', 'babel', 'html', 'chrome', 'firefox', 'extras'], () 
 	gulp.src('app/vendor/firefox/manifest.json')
 		.pipe($.chromeManifest({
 			background: {
-				target: 'scripts/background.js'
+				target: 'app/scripts/background.js'
 			}
 		}))
 	.pipe(gulp.dest(dist('firefox')));
@@ -253,7 +253,7 @@ gulp.task('build:chrome', ['build:base', 'vendor:chrome'], (done) => {
     .pipe($.chromeManifest({
 	    buildnumber: version,
       background: {
-				target: 'scripts/background.js'
+				target: 'app/scripts/background.js'
 			}
 		}))
     .pipe(gulp.dest(dist('chrome')));
@@ -272,7 +272,7 @@ gulp.task('build:firefox', ['build:base', 'vendor:firefox'], (done) => {
     .pipe($.chromeManifest({
 			buildnumber: version,
       background: {
-				target: 'scripts/background.js'
+				target: 'app/scripts/background.js'
 			}
 		}))
     .pipe(gulp.dest(dist('firefox')));
