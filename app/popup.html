@@ -23,6 +23,10 @@
   <link href="styles/main.css" rel="stylesheet">
   <!-- endbuild -->
 
+  <!-- build:css styles/pure-min.css -->
+  <link href="styles/pure/pure-min.css" rel="stylesheet">
+  <!-- endbuild -->
+
   <!-- build:js scripts/popup.js -->
   <script src="scripts/popup.js"></script>
   <!-- endbuild -->
@@ -33,10 +37,9 @@
 </head>
 <body>
 <div class=nav-link><a href=about.html>About</a></div>
-<button type="button" id="refresh">Refresh</button>
-
-<div class=vcontainer id=main-page>
-  <div id="accounts" class=gb_Cb>
+<div class=vcontainer>
+  <div class=pure-g id=accounts>
+    <div class=pure-u-1-1><h3><a id=refresh class="pure-button pure-button-primary" href="#">Refresh</a></h3></div>
   </div>
 </div>
 </body>

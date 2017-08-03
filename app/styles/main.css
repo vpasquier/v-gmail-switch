@@ -131,6 +131,10 @@ ul {
   text-align: left;
 }
 
+.nav-link-center {
+  text-align: center;
+}
+
 .useful-links,
 .nav-link a {
   font-size: 15px;

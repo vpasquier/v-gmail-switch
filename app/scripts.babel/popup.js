@@ -43,7 +43,6 @@ window.onload = function () {
             accounts = [];
         } else {
             accounts = entry['account_entries'];
-            console.log(accounts[0].email);
             fillTemplate(accounts);
         }
     });
@@ -71,15 +70,12 @@ function fillTemplate(accounts) {
     for (var i = 0; i < accounts.length; i++) {
         var email = accounts[i].email;
         var url = accounts[i].url;
-        var accountItem = '<div class=gb_Db aria-hidden=false>';
-        accountItem = accountItem + '<a class=gb_Eb href=' + url + ' target=_blank rel=noreferrer>';
-        accountItem = accountItem + '<div class=gb_Hb>';
-        accountItem = accountItem + '<div class=gb_Qb>' + email + '</div>';
-        accountItem = accountItem + '</div></a></div>';
+        var accountItem = '<div class=pure-u-1-1><h3><a class=pure-button href=' + url + ' target=_blank rel=noreferrer>';
+        accountItem = accountItem + email + '</a></h3></div>';
         accountItems.push(accountItem);
     }
     var accountContainer = document.getElementById('accounts');
-    accountContainer.insertAdjacentHTML('afterBegin', accountItems.toString());
+    accountContainer.insertAdjacentHTML('afterBegin', accountItems.toString().replace(',', ''));
 }
 chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
     if (info.status === COMPLETE) {
