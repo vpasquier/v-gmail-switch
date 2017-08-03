@@ -21,9 +21,24 @@
 
 'use strict';
 
-var htmlString = document.documentElement.innerHTML;
-var midPosition = htmlString.indexOf('@gmail.com');
-var element = htmlString.substr(midPosition - 64, midPosition);
-midPosition = element.indexOf('@gmail.com');
-element = element.substr(0, midPosition + '@gmail.com'.length);
-element.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi)[0];
+var accounts = [];
+const PREFIX_GMAIL_URL = 'https://mail.google.com/mail/u/';
+
+function Account(email, url) {
+    this.email = email;
+    this.url = url;
+}
+
+for (var i = 0; i < 10; i++) {
+    var htmlString = document.documentElement.innerHTML;
+    var url = PREFIX_GMAIL_URL + i;
+    var urlIndex = htmlString.indexOf(PREFIX_GMAIL_URL + i);
+    if (urlIndex !== -1) {
+        var htmlElement = htmlString.substr(urlIndex, htmlString.length);
+        var email = htmlElement.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi)[0];
+        var account = new Account(email, url);
+        accounts.push(account);
+    }
+}
+
+accounts;
