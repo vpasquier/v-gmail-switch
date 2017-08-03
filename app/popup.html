@@ -49,21 +49,17 @@
   <!-- build:js scripts/popup.js -->
   <script src="scripts/popup.js"></script>
   <!-- endbuild -->
+
+  <!-- build:js scripts/scanAccounts.js -->
+  <script src="scripts/scanAccounts.js"></script>
+  <!-- endbuild -->
 </head>
 <body>
 <div class=nav-link><a href=about.html>About</a></div>
 <button type="button" id="refresh">Refresh</button>
 
 <div class=vcontainer id=main-page>
-  <div class=gb_Cb>
-    <div class=gb_Db aria-hidden=false>
-      <a class=gb_Eb href=https://mail.google.com/mail/u/0 target=_blank
-         rel=noreferrer>
-        <div class=gb_Hb>
-          <div id="message" class=gb_Qb>vladimir.pasquier@gmail.com</div>
-        </div>
-      </a>
-    </div>
+  <div id="accounts" class=gb_Cb>
   </div>
 </div>
 </body>

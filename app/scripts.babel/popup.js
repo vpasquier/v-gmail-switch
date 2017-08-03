@@ -25,13 +25,28 @@
 
 var PREFIX_GMAIL_URL = 'https://mail.google.com/mail/u/';
 var COMPLETE = 'complete';
-var PARSER_SCRIPT = 'scripts/getPagesSource.js';
+var PARSER_SCRIPT = 'scripts/scanAccounts.js';
 
 var accounts;
 var isTheSameCall;
 
 window.onload = function () {
     document.getElementById('refresh').addEventListener('click', refresh);
+    // Loading of the accounts to display in the popup (check if its good to put that there like this)
+    chrome.storage.local.get('account_entries', function (entry) {
+        var error = chrome.runtime.lastError;
+        if (error) {
+            accounts = [];
+            throw new SwitchGmailException('Cannot get any data within your browser:' + error);
+        }
+        if (Object.keys(entry).length === 0) {
+            accounts = [];
+        } else {
+            accounts = entry['account_entries'];
+            console.log(accounts[0].email);
+            fillTemplate(accounts);
+        }
+    });
 };
 
 function SwitchGmailException(message) {
@@ -39,23 +54,11 @@ function SwitchGmailException(message) {
     this.name = 'SwitchGmailException';
 }
 
-// Loading of the accounts to display in the popup (check if its good to put that there like this)
-chrome.storage.local.get('account_entries', function (entry) {
-    let error = chrome.runtime.lastError;
-    if (error) {
-        accounts = [];
-        throw new SwitchGmailException('Cannot get any data within your browser:' + error);
-    }
-    if (Object.keys(entry).length === 0) {
-        accounts = [];
-    } else {
-        accounts = entry['account_entries'];
-    }
-});
-
 function refresh() {
+    var accountContainer = document.getElementById('accounts');
+    accountContainer.innerHTML = '';
     chrome.storage.local.clear(function () {
-        let error = chrome.runtime.lastError;
+        var error = chrome.runtime.lastError;
         if (error) {
             console.error(error);
         }
@@ -63,6 +66,21 @@ function refresh() {
     updateTabURL(0);
 }
 
+function fillTemplate(accounts) {
+    var accountItems = [];
+    for (var i = 0; i < accounts.length; i++) {
+        var email = accounts[i].email;
+        var url = accounts[i].url;
+        var accountItem = '<div class=gb_Db aria-hidden=false>';
+        accountItem = accountItem + '<a class=gb_Eb href=' + url + ' target=_blank rel=noreferrer>';
+        accountItem = accountItem + '<div class=gb_Hb>';
+        accountItem = accountItem + '<div class=gb_Qb>' + email + '</div>';
+        accountItem = accountItem + '</div></a></div>';
+        accountItems.push(accountItem);
+    }
+    var accountContainer = document.getElementById('accounts');
+    accountContainer.insertAdjacentHTML('afterBegin', accountItems.toString());
+}
 chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
     if (info.status === COMPLETE) {
 
@@ -76,24 +94,20 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
         chrome.tabs.executeScript(null, {
             file: PARSER_SCRIPT
         }, function (result) {
-            let error = chrome.runtime.lastError;
+            var error = chrome.runtime.lastError;
             if (!result || error) {
                 throw new SwitchGmailException('Cannot parse the page content for email detection: ' + error);
             }
 
             // Extract email + url and create/push accounts
-            accounts = result;
+            accounts = result[0];
 
             // Fill template
-            for(let i = 0; i<accounts.length; i++){
-                let email = accounts[i].email;
-                let url = accounts[i].url;
-                let accountItem = '';
-            }
+            fillTemplate(accounts);
 
             // The entry still doesn't exist and has to be added to the accounts listing.
-            chrome.storage.local.set({ 'account_entries': accounts }, function () {
-                let error = chrome.runtime.lastError;
+            chrome.storage.local.set({'account_entries': accounts}, function () {
+                var error = chrome.runtime.lastError;
                 if (error) {
                     throw new SwitchGmailException('Cannot store any data within your browser:' + error);
                 }
@@ -106,7 +120,7 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
 
 function updateTabURL(number) {
     isTheSameCall = false;
-    chrome.tabs.update({ 'url': PREFIX_GMAIL_URL + number }, function () {
+    chrome.tabs.update({'url': PREFIX_GMAIL_URL + number}, function () {
         chrome.tabs.executeScript({
             code: 'history.replaceState({}, "", " ");'
         });
@@ -114,11 +128,12 @@ function updateTabURL(number) {
 }
 
 function navigate(url) {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.update(tabs[0].id, { url: url });
+    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+        chrome.tabs.update(tabs[0].id, {url: url});
     });
 }
 
 function notification(idP, titleP, messageP, img) {
-    chrome.runtime.sendMessage({ 'idP': idP, 'titleP': titleP, 'messageP': messageP, 'img': img }, function () {});
+    chrome.runtime.sendMessage({'idP': idP, 'titleP': titleP, 'messageP': messageP, 'img': img}, function () {
+    });
 };
