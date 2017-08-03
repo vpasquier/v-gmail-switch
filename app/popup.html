@@ -34,9 +34,17 @@
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="bower_components/jquery-confirm/jquery.confirm.js"></script>
-  <script src="scripts/popup.js"></script>
-  <script src="https://apis.google.com/js/api.js"></script>
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="bower_components/shadycss/apply-shim.min.js"></script>
+  <script src="bower_components/shadycss/custom-style-interface.min.js"></script>
   <!-- endbower -->
+
+
+  <!-- build:html elements/elements.html -->
+  <!-- bower:html -->
+  <link rel="import" href="elements/elements.html">
+  <!-- endbower -->
+  <!-- endbuild -->
 
   <!-- build:js scripts/popup.js -->
   <script src="scripts/popup.js"></script>
@@ -59,6 +67,7 @@
       </div>
     </a></div>
   </div>
+  <popup-element toggle-icon="favorite"></popup-element>
 </div>
 </body>
 </html>
