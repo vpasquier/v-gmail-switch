@@ -16,8 +16,6 @@ The goal is having only quick links in a popup with your gmail accounts displaye
 
 From the Chrome Web Store: install [Gmail Switch](https://chrome.google.com/webstore/detail/gmail-switch/mhehbcmdngeklochfbpihjgmgepkddie).
 
-WIP: - From Mozilla's Add-ons page: install [Gmail Switch](https://addons.mozilla.org/).
-
 ## Build
 
 From GitHub:
@@ -33,7 +31,7 @@ $ gulp build:<browser>
 
 You can follow the developments and report issues here on github in this repository or on [https://waffle.io/vpasquier/v-gmail-switch](https://waffle.io/vpasquier/v-gmail-switch).
 
-## GES License
+## Gmail Switch License
 
-GES uses the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
+Gmail Switch uses the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
 
