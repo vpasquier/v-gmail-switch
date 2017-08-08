@@ -27,20 +27,22 @@ var PREFIX_GMAIL_URL = 'https://mail.google.com/mail/u/';
 var COMPLETE = 'complete';
 var PARSER_SCRIPT = 'scripts/scanAccounts.js';
 
+var accounts;
 var isTheSameCall;
-var isFromHere;
+var isFromHere = false;
 
 window.onload = function () {
     document.getElementById('refresh').addEventListener('click', refresh);
-    document.getElementById('openAll').addEventListener('click', openTabs);
     // Loading of the accounts to display in the popup (check if its good to put that there like this)
     chrome.storage.local.get('account_entries', function (entry) {
         var error = chrome.runtime.lastError;
-        let accounts = [];
         if (error) {
+            accounts = [];
             throw new SwitchGmailException('Cannot get any data within your browser:' + error);
         }
-        if (Object.keys(entry).length !== 0) {
+        if (Object.keys(entry).length === 0) {
+            accounts = [];
+        } else {
             accounts = entry['account_entries'];
             fillTemplate(accounts);
         }
@@ -73,8 +75,17 @@ function fillTemplate(accounts) {
         accountItem = accountItem + email + '</a></h3></div>';
         accountItems.push(accountItem);
     }
+    if (accountItems.length !== 0) {
+        accountItems.push('<div class=pure-u-1-1><h3><a id=openAll class=pure-button href=#>Open All</a></h3></div>');
+    }
     var accountContainer = document.getElementById('accounts');
-    accountContainer.insertAdjacentHTML('afterBegin', accountItems.toString().replace(',', ''));
+    if (accountItems.length !== 0) {
+        accountContainer.insertAdjacentHTML('afterBegin', accountItems.toString().replace(',', ''));
+        document.getElementById('openAll').addEventListener('click', openTabs);
+    }
+    if (accountItems.length === 0) {
+        accountContainer.insertAdjacentHTML('afterBegin', '<div class=pure-u-1-1><h3>Login into your Account(s)</h3></div>');
+    }
 }
 chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
     if (info.status === COMPLETE) {
@@ -83,8 +94,8 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
         if (isTheSameCall && !isFromHere) {
             return;
         } else {
-            isTheSameCall = true;
             isFromHere = false;
+            isTheSameCall = true;
         }
 
         chrome.tabs.executeScript(null, {
@@ -96,7 +107,7 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
             }
 
             // Extract email + url and create/push accounts
-            let accounts = result[0];
+            accounts = result[0];
 
             // Fill template
             fillTemplate(accounts);
@@ -108,6 +119,11 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
                     throw new SwitchGmailException('Cannot store any data within your browser:' + error);
                 }
             });
+            if (accounts.length !== 0) {
+                notification('notif1', 'Done!', 'Accounts Added.');
+            } else {
+                notification('notif2', 'Please', 'Login into your Account(s)');
+            }
         });
     }
 });
@@ -128,9 +144,10 @@ function openTabs() {
     chrome.storage.local.get('account_entries', function (entry) {
         var error = chrome.runtime.lastError;
         if (error) {
+            accounts = [];
             throw new SwitchGmailException('Cannot get any data within your browser:' + error);
         }
-        let accounts = entry['account_entries'];
+        accounts = entry['account_entries'];
         if (!accounts) {
             refresh();
         }
@@ -140,7 +157,12 @@ function openTabs() {
     });
 }
 
-function notification(idP, titleP, messageP, img) {
-    chrome.runtime.sendMessage({'idP': idP, 'titleP': titleP, 'messageP': messageP, 'img': img}, function () {
+function notification(idP, titleP, messageP) {
+    chrome.runtime.sendMessage({
+        'idP': idP,
+        'titleP': titleP,
+        'messageP': messageP,
+        'img': '../images/v-128.png'
+    }, function () {
     });
 };
