@@ -27,21 +27,20 @@ var PREFIX_GMAIL_URL = 'https://mail.google.com/mail/u/';
 var COMPLETE = 'complete';
 var PARSER_SCRIPT = 'scripts/scanAccounts.js';
 
-var accounts;
 var isTheSameCall;
+var isFromHere;
 
 window.onload = function () {
     document.getElementById('refresh').addEventListener('click', refresh);
+    document.getElementById('openAll').addEventListener('click', openTabs);
     // Loading of the accounts to display in the popup (check if its good to put that there like this)
     chrome.storage.local.get('account_entries', function (entry) {
         var error = chrome.runtime.lastError;
+        let accounts = [];
         if (error) {
-            accounts = [];
             throw new SwitchGmailException('Cannot get any data within your browser:' + error);
         }
-        if (Object.keys(entry).length === 0) {
-            accounts = [];
-        } else {
+        if (Object.keys(entry).length !== 0) {
             accounts = entry['account_entries'];
             fillTemplate(accounts);
         }
@@ -81,10 +80,11 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
     if (info.status === COMPLETE) {
 
         // Gmail is refreshing when hitting the page. Here is the guard.
-        if (isTheSameCall) {
+        if (isTheSameCall && !isFromHere) {
             return;
         } else {
             isTheSameCall = true;
+            isFromHere = false;
         }
 
         chrome.tabs.executeScript(null, {
@@ -96,7 +96,7 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
             }
 
             // Extract email + url and create/push accounts
-            accounts = result[0];
+            let accounts = result[0];
 
             // Fill template
             fillTemplate(accounts);
@@ -116,6 +116,7 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
 
 function updateTabURL(number) {
     isTheSameCall = false;
+    isFromHere = true;
     chrome.tabs.update({'url': PREFIX_GMAIL_URL + number}, function () {
         chrome.tabs.executeScript({
             code: 'history.replaceState({}, "", " ");'
@@ -123,9 +124,19 @@ function updateTabURL(number) {
     });
 }
 
-function navigate(url) {
-    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-        chrome.tabs.update(tabs[0].id, {url: url});
+function openTabs() {
+    chrome.storage.local.get('account_entries', function (entry) {
+        var error = chrome.runtime.lastError;
+        if (error) {
+            throw new SwitchGmailException('Cannot get any data within your browser:' + error);
+        }
+        let accounts = entry['account_entries'];
+        if (!accounts) {
+            refresh();
+        }
+        for (var i = 0; i < accounts.length; i++) {
+            chrome.tabs.create({url: accounts[i].url});
+        }
     });
 }
 
