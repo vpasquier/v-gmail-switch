@@ -12,9 +12,9 @@ All the other extensions are providing too much features such as:
 
 The goal is having only quick links in a popup with your gmail accounts displayed to open a tab with the related one.
 
-## WIP: Getting Started with Gmail Switch
+## Getting Started with Gmail Switch
 
-WIP: - From the Chrome Web Store: install [Google Engine Switch](https://chrome.google.com).
+From the Chrome Web Store: install [Google Engine Switch](https://chrome.google.com/webstore/detail/gmail-switch/mhehbcmdngeklochfbpihjgmgepkddie).
 
 WIP: - From Mozilla's Add-ons page: install [Google Engine Switch](https://addons.mozilla.org/).
 
