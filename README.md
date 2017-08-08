@@ -14,9 +14,9 @@ The goal is having only quick links in a popup with your gmail accounts displaye
 
 ## Getting Started with Gmail Switch
 
-From the Chrome Web Store: install [Google Engine Switch](https://chrome.google.com/webstore/detail/gmail-switch/mhehbcmdngeklochfbpihjgmgepkddie).
+From the Chrome Web Store: install [Gmail Switch](https://chrome.google.com/webstore/detail/gmail-switch/mhehbcmdngeklochfbpihjgmgepkddie).
 
-WIP: - From Mozilla's Add-ons page: install [Google Engine Switch](https://addons.mozilla.org/).
+WIP: - From Mozilla's Add-ons page: install [Gmail Switch](https://addons.mozilla.org/).
 
 ## Build
 
