@@ -99,7 +99,6 @@ gulp.task('lint', lint('app/scripts.babel/**/*.js', {
 gulp.task('extras', () => {
   return gulp.src([
     'app/*.*',
-    'app/_locales/**',
     'app/libs/**',
     '!app/scripts.babel',
     '!app/*.json',
@@ -196,7 +195,6 @@ gulp.task('watch', ['lint', 'babel', 'html', 'chrome', 'firefox', 'extras'], () 
     'app/libs/**/*.js',
     'app/images/**/*',
     'app/styles/**/*',
-    'app/_locales/**/*.json',
     'app/vendor/**/*'
   ]).on('change', $.livereload.reload);
 
