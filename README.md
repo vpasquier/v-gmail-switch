@@ -16,6 +16,8 @@ The goal is having only quick links in a popup with your gmail accounts displaye
 
 From the Chrome Web Store: install [Gmail Switch](https://chrome.google.com/webstore/detail/gmail-switch/mhehbcmdngeklochfbpihjgmgepkddie).
 
+Here is the description [article](https://medium.com/@vladimir.pasquier/fastboot-browser-extension-e0956f5a029e)
+
 ## Build
 
 From GitHub:
