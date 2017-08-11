@@ -91,7 +91,7 @@ chrome.tabs.onUpdated.addListener(function (tabid, info, tab) {
     if (info.status === COMPLETE) {
 
         // Gmail is refreshing when hitting the page. Here is the guard.
-        if (isTheSameCall && !isFromHere) {
+        if (isTheSameCall || !isFromHere) {
             return;
         } else {
             isFromHere = false;
