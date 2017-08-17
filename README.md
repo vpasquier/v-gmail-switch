@@ -1,6 +1,6 @@
 # Gmail Switch
 
-[![Join the chat at https://gitter.im/v-ges/Lobby](https://badges.gitter.im/v-ges/Lobby.svg)](https://gitter.im/v-gmail-switch/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/v-gmail-switch/Lobby](https://badges.gitter.im/v-gmail-switch/Lobby.svg)](https://gitter.im/v-gmail-switch/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 `Gmail switch` is just a tool to quickly switch between gmail accounts in Chrome browser with a fast popup.
 
